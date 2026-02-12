@@ -27,7 +27,10 @@ playwright-ui-automation/
 ├── src/  
 │   └── pages/  
 │       ├── BasePage.js  
-│       └── HomePage.js  
+│       ├── HomePage.js  
+│       └── components/  
+│           ├── MenuSection.js  
+│           └── CartSection.js  
 │  
 ├── tests/  
 │   ├── fixtures/  
@@ -35,7 +38,8 @@ playwright-ui-automation/
 │   │  
 │   └── e2e/  
 │       ├── testaurant-home.spec.js  
-│       └── menu-search.spec.js  
+│       ├── menu-search.spec.js  
+│       └── cart-subtotal.spec.js  
 │  
 └── README.md  
 
@@ -46,6 +50,15 @@ playwright-ui-automation/
 ### Page Object Model (POM)
 
 The framework follows the Page Object Model pattern:
+
+### Component-Based Sections
+
+The framework uses a component-based structure inside pages:
+
+- `MenuSection` – encapsulates search functionality and menu-related locators.
+- `CartSection` – encapsulates cart summary, subtotal logic, and cart-related assertions.
+
+This keeps `HomePage` clean and improves scalability and maintainability.
 
 - **BasePage.js**  
   Contains shared navigation logic.
@@ -92,6 +105,18 @@ tests/e2e/menu-search.spec.js
 
 ---
 
+### ✅ Cart Subtotal Validation (Add to Cart)
+
+**Scenario:**
+- Search for "Pasta"
+- Add "Carbonara Pasta" to cart
+- Extract item price (RON value)
+- Verify that **Subtotal** matches the product price (single item)
+
+File:
+tests/e2e/cart-subtotal.spec.js
+
+---
 
 ## ▶️ Running Tests
 
@@ -204,7 +229,6 @@ These were resolved by:
 ## 📈 Future Improvements
 
 - Test tagging (@smoke, @regression)
-- Component-based page sections
 - Advanced list assertions
 - Reporting integration (Allure)
 - Parallel execution strategy
