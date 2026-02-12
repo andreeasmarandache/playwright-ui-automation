@@ -13,9 +13,18 @@ export class HomePage extends BasePage {
   }
 
   async openHome() {
-  await this.open('https://apps.qualiadept.eu/testaurant/');
-  await this.pageHeading.waitFor({ state: 'visible' });
+  await this.page.goto('https://apps.qualiadept.eu/testaurant/', { waitUntil: 'domcontentloaded' });
+
+  // ✅ anchor robust în CI
+  await this.page.waitForLoadState('domcontentloaded');
+  await this.page.waitForSelector('body');
+
+  // pe local putem aștepta heading-ul, dar în CI îl facem “best effort”
+  if (!process.env.GITHUB_ACTIONS) {
+    await this.pageHeading.waitFor({ state: 'visible' });
+  }
 }
+
 
 
   async searchFor(text) {

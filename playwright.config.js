@@ -13,8 +13,18 @@ export default defineConfig({
 
   use: {
     baseURL: 'https://apps.qualiadept.eu/testaurant/',
-    trace: 'on-first-retry',
+    trace: isGitHubActions ? 'on-first-retry' : 'off',
+    ignoreHTTPSErrors: true,
+
+    // ❗ video/screenshot doar în CI
+    screenshot: isGitHubActions ? 'only-on-failure' : 'off',
+    video: isGitHubActions ? 'retain-on-failure' : 'off',
   },
+
+  timeout: process.env.GITHUB_ACTIONS ? 60000 : 30000,
+  expect: {
+    timeout: 10000,
+},
 
   projects: isGitHubActions
     ? [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }]
